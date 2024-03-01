@@ -10,6 +10,7 @@ public class AnimationStateBehavior : StateMachineBehaviour
         public float floatValue;
         public int intValue;
         public bool boolValue;
+        public bool setTrigger; // New field to determine whether to set or reset the trigger
 
         public enum ActionType
         {
@@ -45,7 +46,14 @@ public class AnimationStateBehavior : StateMachineBehaviour
                         animator.SetBool(action.parameterName, action.boolValue);
                         break;
                     case AnimationAction.ActionType.Trigger:
-                        animator.SetTrigger(action.parameterName);
+                        if (action.setTrigger)
+                        {
+                            animator.SetTrigger(action.parameterName);
+                        }
+                        else
+                        {
+                            animator.ResetTrigger(action.parameterName);
+                        }
                         break;
                     default:
                         Debug.LogError("Unsupported action type");
